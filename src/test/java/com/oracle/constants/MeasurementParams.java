@@ -10,4 +10,5 @@ public class MeasurementParams {
   public static final String CITY = "city";
   public static final String ORDER_BY = "order_by";
   public static final String SORT = "sort";
+  public static final String COORDINATES = "coordinates";
 }

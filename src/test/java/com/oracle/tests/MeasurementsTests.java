@@ -1,6 +1,7 @@
 package com.oracle.tests;
 
 import static com.oracle.constants.MeasurementParams.CITY;
+import static com.oracle.constants.MeasurementParams.COORDINATES;
 import static com.oracle.constants.MeasurementParams.COUNTRY_ID;
 import static com.oracle.constants.MeasurementParams.DATE_FROM;
 import static com.oracle.constants.MeasurementParams.DATE_TO;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.oracle.model.ErrorResponse;
 import com.oracle.model.measurement.MeasurementResponse;
 import org.apache.http.HttpStatus;
+import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
 
 public class MeasurementsTests extends BaseTests {
@@ -66,9 +68,32 @@ public class MeasurementsTests extends BaseTests {
         .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY).extract().as(ErrorResponse.class);
 
     assertThat(retrievedError.getDetail()).asList().isNotEmpty();
-    assertThat(retrievedError.getDetail().get(0).getLoc().get(1)).isEqualTo(COUNTRY_ID);
-    assertThat(retrievedError.getDetail().get(0).getMsg()).isEqualTo(
+    assertThat(retrievedError.getDetail().get(0).loc.get(1)).isEqualTo(COUNTRY_ID);
+    assertThat(retrievedError.getDetail().get(0).msg).isEqualTo(
         "ensure this value has at most 2 characters");
+  }
+
+  @Test
+  public void validatePageLimitReturnsHttp422AndErrorMessage() {
+    SoftAssertions softAssertions = new SoftAssertions();
+
+    ErrorResponse retrievedError = given()
+        .spec(requestSpec)
+        .when()
+        .queryParam(LIMIT, 100001)
+        .queryParam(PAGE, 6001)
+        .get()
+        .then()
+        .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY).extract().as(ErrorResponse.class);
+
+    softAssertions.assertThat(retrievedError.getDetail()).asList().isNotEmpty();
+    softAssertions.assertThat(retrievedError.getDetail().get(0).loc.get(1)).isEqualTo(LIMIT);
+    softAssertions.assertThat(retrievedError.getDetail().get(0).msg).isEqualTo(
+        "ensure this value is less than or equal to 100000");
+    softAssertions.assertThat(retrievedError.getDetail().get(1).loc.get(1)).isEqualTo(PAGE);
+    softAssertions.assertThat(retrievedError.getDetail().get(1).msg).isEqualTo(
+        "ensure this value is less than or equal to 6000");
+    softAssertions.assertAll();
   }
 
   // Validate that the structure of the JSON object matches expectations (“meta”, “results” array, measurement entity object, etc.)
@@ -98,5 +123,23 @@ public class MeasurementsTests extends BaseTests {
     assertThat(measurementResponse.getResults()).asList().isNotEmpty();
     assertThat(measurementResponse.getResults().get(0).getCity()).isEqualTo(
         "BAJA CALIFORNIA NORTE");
+  }
+
+  @Test
+  public void specifyCoordinatesAndValidatesCountryAndCity() {
+    MeasurementResponse measurementResponse =
+        given().spec(requestSpec)
+            .when()
+            .queryParam(LIMIT, 10).queryParam(PAGE, 1)
+            .queryParam(COORDINATES, "4.76251,-74.09343")
+            .get()
+            .then()
+            .statusCode(HttpStatus.SC_OK).extract().as(MeasurementResponse.class);
+
+    assertThat(measurementResponse.getResults()).asList().isNotEmpty();
+    assertThat(measurementResponse.getResults().get(0).getCountry()).isEqualTo(
+        "CO");
+    assertThat(measurementResponse.getResults().get(0).getCity()).isEqualTo(
+        "Bogota");
   }
 }
