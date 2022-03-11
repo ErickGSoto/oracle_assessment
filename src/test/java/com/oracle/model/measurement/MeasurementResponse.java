@@ -7,6 +7,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MeasurementResponse extends APIV2Response {
+
   public static final String JSON_SCHEMA_PATH = "schemas/Measurement.json";
   private List<Measurement> results = new ArrayList<>();
 

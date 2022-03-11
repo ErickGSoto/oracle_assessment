@@ -5,6 +5,7 @@ import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MeasurementDate {
+
   private Date utc;
   private Date local;
 

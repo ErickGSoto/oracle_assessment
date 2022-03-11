@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Measurement implements Serializable {
+
   private Integer locationId;
   private String location;
   private String parameter;

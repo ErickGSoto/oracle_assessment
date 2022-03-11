@@ -6,6 +6,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorDetail {
+
   private List<String> loc = new ArrayList<>();
   private String msg;
   private String type;

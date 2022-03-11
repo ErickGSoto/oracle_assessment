@@ -5,6 +5,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorResponse {
+
   List<ErrorDetail> detail;
 
   public List<ErrorDetail> getDetail() {
