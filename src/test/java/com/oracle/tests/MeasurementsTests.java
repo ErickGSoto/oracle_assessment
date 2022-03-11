@@ -1,13 +1,13 @@
 package com.oracle.tests;
 
-import static com.oracle.constants.Params.CITY;
-import static com.oracle.constants.Params.COUNTRY_ID;
-import static com.oracle.constants.Params.DATE_FROM;
-import static com.oracle.constants.Params.DATE_TO;
-import static com.oracle.constants.Params.LIMIT;
-import static com.oracle.constants.Params.ORDER_BY;
-import static com.oracle.constants.Params.PAGE;
-import static com.oracle.constants.Params.SORT;
+import static com.oracle.constants.MeasurementParams.CITY;
+import static com.oracle.constants.MeasurementParams.COUNTRY_ID;
+import static com.oracle.constants.MeasurementParams.DATE_FROM;
+import static com.oracle.constants.MeasurementParams.DATE_TO;
+import static com.oracle.constants.MeasurementParams.LIMIT;
+import static com.oracle.constants.MeasurementParams.ORDER_BY;
+import static com.oracle.constants.MeasurementParams.PAGE;
+import static com.oracle.constants.MeasurementParams.SORT;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.Assertions.assertThat;

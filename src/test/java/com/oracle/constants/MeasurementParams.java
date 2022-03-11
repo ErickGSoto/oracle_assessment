@@ -1,6 +1,6 @@
 package com.oracle.constants;
 
-public class Params {
+public class MeasurementParams {
 
   public static final String LIMIT = "limit";
   public static final String PAGE = "page";
