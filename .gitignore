@@ -7,6 +7,9 @@
 # IntelliJ files
 .idea/
 
+# Compiled files
+/target/
+
 # Package Files #
 *.jar
 *.war
